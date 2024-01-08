@@ -1,0 +1,32 @@
+<script>
+    function validateAndSubmitForm(event) {
+        event.preventDefault();
+        var num1 = document.getElementById('num1').value.replace(',', '.');
+        var num2 = document.getElementById('num2').value.replace(',', '.');
+        document.getElementById('num1').value = num1;
+        document.getElementById('num2').value = num2;
+        document.getElementById('calcForm').submit();
+    }
+</script>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculator Page</title>
+</head>
+<body>
+    <form id="calcForm" method="POST" onsubmit="validateAndSubmitForm(event)">
+        <input type="text" id="num1" name="num1" required>
+        <select name="operation" required>
+            <option value="add">+</option>
+            <option value="subtract">-</option>
+            <option value="multiply">*</option>
+            <option value="divide">/</option>
+        </select>
+        <input type="text" id="num2" name="num2" required>
+        <input type="submit" value="Calculate">
+    </form>
+    {% if result %}
+        <p>Výsledek : {{ result }}</p>
+    {% endif %}
+</body>
+</html>
