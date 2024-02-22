@@ -1,6 +1,19 @@
+import os
+import pickle
 from flask import Flask, request, render_template
 
 app = Flask(__name__)
+
+# Create the directory if it doesn't exist
+if not os.path.exists('results'):
+    os.makedirs('results')
+
+# Try to load number_pairs from a file
+try:
+    with open('results/number_pairs.pkl', 'rb') as f:
+        number_pairs = pickle.load(f)
+except FileNotFoundError:
+    number_pairs = {}
 
 @app.route('/', methods=['GET', 'POST'])
 def calculate():
@@ -26,6 +39,13 @@ def calculate():
                     return "Error: Division by zero is not allowed."
             else:
                 return "Error: Invalid operation."
+
+            # Store the number pair and result
+            number_pairs[(num1, num2)] = result
+
+            # Save number_pairs to a file
+            with open('results/number_pairs.pkl', 'wb') as f:
+                pickle.dump(number_pairs, f)
 
             return render_template('index.html', result=result)
 
